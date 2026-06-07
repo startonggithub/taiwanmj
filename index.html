@@ -18,8 +18,7 @@
   <link rel="stylesheet" href="assets/datatables/data-tables.bootstrap4.min.css">
   <link rel="stylesheet" href="assets/theme/css/style.css">
   <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2955503480137835"
-     crossorigin="anonymous"></script>
+
 </head>
 <body>
     <section class="menu cid-qTkzRZLJNu" once="menu" id="menu1-0">
@@ -53,12 +52,12 @@
                     <li class="nav-item">
                         <a class="nav-link link text-white display-4" href="index.html#table1-b"><span class="mbrib-file mbr-iconfont mbr-iconfont-btn" style="font-size: 20px;"></span>番數說明及設定</a>
                     </li>
-                    <!--<li id="point-function" class="nav-item">
+                    <li id="point-function" class="nav-item">
                         <a class="nav-link link text-white display-4" href="point.html"><span class="mbrib-play mbr-iconfont mbr-iconfont-btn" style="font-size: 20px;"></span>計番器</a>
                     </li>
                     <li id="record-function" class="nav-item">
                         <a class="nav-link link text-white display-4" href="record.html"><span class="mbrib-edit mbr-iconfont mbr-iconfont-btn" style="font-size: 20px;"></span>局數記錄</a>
-                    </li>-->
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link link text-white display-4" href="record_share.html"><span class="mbrib-share mbr-iconfont mbr-iconfont-btn" style="font-size: 20px;"></span>共享記錄</a>
                     </li>
@@ -438,7 +437,7 @@
         $(document).ready(function () {
             $('#version').text(appVersion);
 
-            if (appCategory == 'free' || appCategory == 'paid') {
+            if (appCategory == 'free' || appCategory == 'paid' || appCategory == 'web') {
                 //Disable cut copy paste
                 $('body').bind('cut copy paste', function (e) {
                     e.preventDefault();
@@ -450,17 +449,20 @@
                 });
             }
 
-            if (appCategory == 'free') {
+            if (appCategory == 'free' || appCategory == 'web') {
                 $('#point-function').remove();
                 $('#record-function').remove();
             }
 
             $('#table-mini-points td').css('padding', '5px');
 
-			constructRulesTable();    
-			constructPointsTable();
+            //constructRulesTable();    
+            //constructPointsTable();
+            loadRulesTable();
+            loadPointsTable();
         });
 
+        /*
 		function constructRulesTable() {
             var source = "";
             collectionSettings.where("table", "==", "instructions")
@@ -475,9 +477,12 @@
                     console.log("Error get settings:", error);
                 });
         }
+        */
         
-        function loadRulesTable(source) {
-            if (source == "server") {
+        //function loadRulesTable(source) {
+        function loadRulesTable() {
+            //if (source == "server") {
+            if (appCategory == 'private' || appCategory == 'web') {
                 collectionInstructions
                     .orderBy("seq").get()
                     .then(function(querySnapshot) {
@@ -508,6 +513,7 @@
 			}
         }
 
+        /*
 		function constructPointsTable() {
             var source = "";
             collectionSettings.where("table", "==", "points")
@@ -522,9 +528,12 @@
                     console.log("Error get settings:", error);
                 });
         }
+        */
                 
-		function loadPointsTable(source) {
-            if (source == "server") {
+        //function loadPointsTable(source) {
+        function loadPointsTable() {
+            //if (source == "server") {
+            if (appCategory == 'private' || appCategory == 'web') {
                 collectionPoints
                     .orderBy("code").get()
                     .then(function(querySnapshot) {
@@ -727,7 +736,8 @@
 			localStorage.setItem('savePointData', 'No');
 
 			$("#table-contents-points").empty();
-			constructPointsTable();
+            //constructPointsTable();
+            loadPointsTable();
 
 			$('#confirm-message').text('重設完成');
 			$('#confirmModal').modal('show');
